@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Finance App</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <style>
+       
+    .bg-custom {
+      background-color: #f7f9fd;  /* Set the text color to contrast with the background */
+    }
+  </style>
+</head>
+<body class="bg-custom">
+  <nav class="navbar navbar-expand-lg navbar-light bg-primary ">
+    <a class="navbar-brand text-light" href="#">Financije</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse mx-auto" id="navbarNav ">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-light" href="index.html">Račun</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="cilj.html">Ciljevi</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="stats.html">Statistika</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled text-light" href="login.html">Odjava</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1 class="mt-4">Finance Tracker</h1>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card mt-4">
+          <div class="card-body">
+            <h5 class="card-title">Income</h5>
+            <form id="incomeForm">
+              <div class="form-group">
+                <label for="incomeDescription">Description</label>
+                <input type="text" class="form-control" id="incomeDescription" required>
+              </div>
+              <div class="form-group">
+                <label for="incomeAmount">Amount</label>
+                <input type="number" class="form-control" id="incomeAmount" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Add Income</button>
+            </form>
+          </div>
+        </div>
+
+        <div id="incomeList" class="card mt-4">
+          <div class="card-body">
+            <h5 class="card-title">Income List</h5>
+            <ul class="list-group" id="incomeItems"></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="card mt-4">
+          <div class="card-body">
+            <h5 class="card-title">Expenses</h5>
+            <form id="expenseForm">
+              <div class="form-group">
+                <label for="expenseDescription">Description</label>
+                <input type="text" class="form-control" id="expenseDescription" required>
+              </div>
+              <div class="form-group">
+                <label for="expenseAmount">Amount</label>
+                <input type="number" class="form-control" id="expenseAmount" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Add Expense</button>
+            </form>
+          </div>
+        </div>
+
+        <div id="expenseList" class="card mt-4">
+          <div class="card-body">
+            <h5 class="card-title">Expense List</h5>
+            <ul class="list-group" id="expenseItems"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="balance" class="card mt-4">
+      <div class="card-body">
+        <h5 class="card-title">Balance</h5>
+        <p id="balanceAmount" class="card-text"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Array to store income and expense items
+    var incomeItems = [];
+    var expenseItems = [];
+
+    // Function to update income list
+    function updateIncomeList() {
+      var incomeList = document.getElementById('incomeItems');
+      incomeList.innerHTML = '';
+
+      for (var i = 0; i < incomeItems.length; i++) {
+        var item = incomeItems[i];
+        var listItem = document.createElement('li');
+        listItem.className = 'list-group-item';
+        listItem.textContent = item.description + ' - $' + item.amount.toFixed(2);
+        incomeList.appendChild(listItem);
+      }
+    }
+
+    // Function to update expense list
+    function updateExpenseList() {
+      var expenseList = document.getElementById('expenseItems');
+      expenseList.innerHTML = '';
+
+      for (var i = 0; i < expenseItems.length; i++) {
+        var item = expenseItems[i];
+        var listItem = document.createElement('li');
+        listItem.className = 'list-group-item';
+        listItem.textContent = item.description + ' - $' + item.amount.toFixed(2);
+        expenseList.appendChild(listItem);
+      }
+    }
+
+    // Function to update balance
+    function updateBalance() {
+      var totalIncome = incomeItems.reduce((sum, item) => sum + item.amount, 0);
+      var totalExpenses = expenseItems.reduce((sum, item) => sum + item.amount, 0);
+      var balance = totalIncome - totalExpenses;
+
+      var balanceAmount = document.getElementById('balanceAmount');
+      balanceAmount.textContent = 'Balance: $' + balance.toFixed(2);
+    }
+
+    // Function to handle the submission of the income form
+    function handleIncomeFormSubmit(event) {
+      event.preventDefault();
+
+      var description = document.getElementById('incomeDescription').value;
+      var amount = parseFloat(document.getElementById('incomeAmount').value);
+
+      var incomeItem = {
+        description: description,
+        amount: amount
+      };
+
+      incomeItems.push(incomeItem);
+      updateIncomeList();
+      updateBalance();
+
+      document.getElementById('incomeForm').reset();
+    }
+
+    // Function to handle the submission of the expense form
+    function handleExpenseFormSubmit(event) {
+      event.preventDefault();
+
+      var description = document.getElementById('expenseDescription').value;
+      var amount = parseFloat(document.getElementById('expenseAmount').value);
+
+      var expenseItem = {
+        description: description,
+        amount: amount
+      };
+
+      expenseItems.push(expenseItem);
+      updateExpenseList();
+      updateBalance();
+
+      document.getElementById('expenseForm').reset();
+    }
+
+    // Add event listeners to the income and expense forms
+    var incomeForm = document.getElementById('incomeForm');
+    incomeForm.addEventListener('submit', handleIncomeFormSubmit);
+
+    var expenseForm = document.getElementById('expenseForm');
+    expenseForm.addEventListener('submit', handleExpenseFormSubmit);
+  </script>
+</body>
+</html>

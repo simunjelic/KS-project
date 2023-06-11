@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Finance Goal Tracker</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="script.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+    <a class="navbar-brand text-light" href="#">Financije</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-light" href="index.html">Račun</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light " href="cilj.html">Ciljevi</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="stats.html">Statistika</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled text-light" href="login.html">Odjava</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Finance Goal Tracker</h1>
+
+    <div class="card user-amount-container">
+      <div class="card-body">
+        <h5 class="card-title">Set your financial goal</h5>
+        <form>
+          <div class="form-group">
+            <label for="goalAmount">Goal Amount (€)</label>
+            <input type="number" class="form-control" id="goalAmount" placeholder="Enter goal amount">
+          </div>
+          <div class="form-group">
+            <label for="goalReason">Reason/Description</label>
+            <input type="text" class="form-control" id="goalReason" placeholder="Enter reason/description">
+          </div>
+          <button type="submit" class="btn btn-primary">Set Goal</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Your Goals</h5>
+        <ul id="goalList" class="list-group">
+          <!-- The list of goals will be dynamically populated here -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Generate random balance
+    var balance = Math.floor(Math.random() * (10000 - 5000 + 1)) + 5000;
+
+    document.querySelector('form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var goalAmount = document.getElementById('goalAmount').value;
+      var goalReason = document.getElementById('goalReason').value;
+
+      if (goalAmount && goalReason) {
+        var goalList = document.getElementById('goalList');
+        var li = document.createElement('li');
+        li.className = 'list-group-item';
+
+        var percentage = Math.floor((balance / goalAmount) * 100);
+
+        li.appendChild(document.createTextNode(balance + '/' + goalAmount + ' - ' + goalReason ));
+
+        var deleteButton = document.createElement('button');
+        deleteButton.className = 'btn btn-danger btn-sm ml-2';
+        deleteButton.appendChild(document.createTextNode('Delete'));
+        deleteButton.addEventListener('click', function() {
+          goalList.removeChild(li);
+        });
+        li.appendChild(deleteButton);
+
+        goalList.appendChild(li);
+
+        // Clear the input fields
+        document.getElementById('goalAmount').value = '';
+        document.getElementById('goalReason').value = '';
+      }
+    });
+  </script>
+</body>
+</html>
