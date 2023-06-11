@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Finance Goal Tracker</title>
+  <title>Praćenje financijskih ciljeva</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="script.js"></script>
@@ -32,34 +32,35 @@
   </nav>
 
   <div class="container">
-    <h1>Finance Goal Tracker</h1>
-
-    <div class="card user-amount-container">
-      <div class="card-body">
-        <h5 class="card-title">Set your financial goal</h5>
-        <form>
-          <div class="form-group">
-            <label for="goalAmount">Goal Amount (€)</label>
-            <input type="number" class="form-control" id="goalAmount" placeholder="Enter goal amount">
-          </div>
-          <div class="form-group">
-            <label for="goalReason">Reason/Description</label>
-            <input type="text" class="form-control" id="goalReason" placeholder="Enter reason/description">
-          </div>
-          <button type="submit" class="btn btn-primary">Set Goal</button>
-        </form>
-      </div>
-    </div>
+    <br/>
+    <h1>Praćenje financijskih ciljeva</h1>
 
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">Your Goals</h5>
+        <h5 class="card-title">Vaši ciljevi</h5>
         <ul id="goalList" class="list-group">
           <!-- The list of goals will be dynamically populated here -->
         </ul>
       </div>
     </div>
-  </div>
+    <br/>
+
+    <div class="card user-amount-container">
+      <div class="card-body">
+        <h5 class="card-title">Postavite vaš financijski cilj</h5>
+        <form>
+          <div class="form-group">
+            <label for="goalAmount">Iznos cilja (€):</label>
+            <input type="number" class="form-control" id="goalAmount" placeholder="Unesite iznos cilja">
+          </div>
+          <div class="form-group">
+            <label for="goalReason">Opis/svrha cilja:</label>
+            <input type="text" class="form-control" id="goalReason" placeholder="Unesite svrhu/opis">
+          </div>
+          <button type="submit" class="btn btn-primary">Postavi cilj</button>
+        </form>
+      </div>
+    </div>
 
   <script>
     // Generate random balance
@@ -77,7 +78,7 @@
 
         var percentage = Math.floor((balance / goalAmount) * 100);
 
-        li.appendChild(document.createTextNode(balance + '/' + goalAmount + ' - ' + goalReason ));
+        li.appendChild(document.createTextNode('Ušteđeno ' + balance + ' od ' + goalAmount + ' -> ' + goalReason ));
 
         var deleteButton = document.createElement('button');
         deleteButton.className = 'btn btn-danger btn-sm ml-2';

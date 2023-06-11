@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Finance Statistics</title>
+  <title>Statistika</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="style.css" />
@@ -32,30 +32,34 @@
   </nav>
 
   <div class="container user-amount-container">
-    <h1 class="mt-4">Finance Statistics</h1>
+    <h1 class="mt-4">Financijska statistika</h1>
     
     <div class="card mt-4 " >
       <div class="card-body">
-        <h5 class="card-title">Income and Expenses</h5>
+        <h5 class="card-title">Prihodi i troškovi</h5>
         
         <div class="row">
-          <div class="col-sm">
-            <h6 class="text-center">Month</h6>
+          <div class="col-sm text-center">
+            <h6 class="text-center">Mjesec</h6>
             <ul id="monthList" class="list-group"></ul>
           </div>
-          <div class="col-sm">
-            <h6 class="text-center">Income</h6>
+          <div class="col-sm text-center">
+            <h6 class="text-center">Prihodi</h6>
             <ul id="incomeList" class="list-group"></ul>
             <p id="totalIncome" class="mt-3 text-center"></p>
           </div>
-          <div class="col-sm">
-            <h6 class="text-center">Expenses</h6>
+          <div class="col-sm text-center">
+            <h6 class="text-center">Troškovi</h6>
             <ul id="expensesList" class="list-group"></ul>
             <p id="totalExpenses" class="mt-3 text-center"></p>
           </div>
           <div class="col-sm">
-            <h6 class="text-center">Balance</h6>
-            <p id="balanceAmount" class="text-center"></p>
+            <div class="card text-center">
+              <div class="card-body">
+                <h6 class="card-title">Saldo:</h6>
+                <p id="balanceAmount" class="card-text"></p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -117,9 +121,16 @@
       expensesList.appendChild(expenseItem);
     }
     
-    document.getElementById('totalIncome').textContent = 'Total Income: $' + totalIncome.toFixed(2);
-    document.getElementById('totalExpenses').textContent = 'Total Expenses: $' + totalExpenses.toFixed(2);
-    document.getElementById('balanceAmount').textContent = 'Balance: $' + balance.toFixed(2);
+    document.getElementById('totalIncome').textContent = 'Ukupni prihodi: €' + totalIncome.toFixed(2);
+    document.getElementById('totalExpenses').textContent = 'Ukupni troškovi: €' + totalExpenses.toFixed(2);
+    document.getElementById('balanceAmount').textContent = 'Saldo: €' + balance.toFixed(2);
+    if (balance > 0) {
+      balanceAmount.style.color = 'green'; 
+      } else if (balance < 0) {
+      balanceAmount.style.color = 'red'; 
+      } else {
+        balanceAmount.style.color = 'black'; 
+      }
   </script>
 </body>
 </html>
