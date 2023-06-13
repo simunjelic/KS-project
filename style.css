@@ -6,7 +6,9 @@
 }
 
 body {
-  background-color: #f7f9fd;
+  background-image: url('assets/dolari.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
 .wrapper {
@@ -19,6 +21,7 @@ body {
 
 .container {
   width: 100%;
+   animation: slideIn 1s ease-in-out;
 }
 
 .sub-container {
@@ -281,3 +284,6 @@ body {
     gap: 1em;
   }
 }
+
+
+

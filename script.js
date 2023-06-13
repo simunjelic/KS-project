@@ -1,128 +1,72 @@
-let totalAmount = document.getElementById("total-amount");
-let userAmount = document.getElementById("user-amount");
-let userIncome = document.getElementById("user-income")
-const checkAmountButton = document.getElementById("check-amount");
-const checkIncomeButton = document.getElementById("check-income");
-const totalAmountButton = document.getElementById("total-amount-button");
-const productTitle = document.getElementById("product-title");
-const productIncome = document.getElementById("product-income");
-const errorMessage = document.getElementById("budget-error");
-const productTitleError = document.getElementById("product-title-error");
-const productCostError = document.getElementById("product-cost-error");
-const amount = document.getElementById("amount");
-const expenditureValue = document.getElementById("expenditure-value");
-const balanceValue = document.getElementById("balance-amount");
-const list = document.getElementById("list");
-let tempAmount = 0;
+// Generate random numbers for income and expenses (replace with your actual data)
+function generateRandomData() {
+  return Math.floor(Math.random() * 1000) + 500;
+}
 
+// Get the current month and year
+var currentDate = new Date();
+var currentMonth = currentDate.getMonth();
+var currentYear = currentDate.getFullYear();
 
-//Set Budget Part
-totalAmountButton.addEventListener("click", () => {
-  tempAmount = totalAmount.value;
-  //empty or negative input
-  if (tempAmount === "" || tempAmount < 0) {
-    errorMessage.classList.remove("hide");
-  } else {
-    errorMessage.classList.add("hide");
-    //Set Budget
-    amount.innerHTML = tempAmount;
-    //Set Balance
-    balanceValue.innerText = tempAmount - expenditureValue.innerText;
-    //Clear Input Box
-    totalAmount.value = "";
-  }
+// Create arrays to store monthly data
+var months = [];
+var incomes = [];
+var expenses = [];
+
+// Calculate statistics for the last 5 months
+for (var i = 4; i >= 0; i--) {
+  var date = new Date(currentYear, currentMonth - i, 1);
+  var month = date.toLocaleString('default', { month: 'long' });
+  var income = generateRandomData();
+  var expense = generateRandomData();
+
+  months.push(month);
+  incomes.push(income);
+  expenses.push(expense);
+}
+
+// Calculate total income and expenses for the year
+var totalIncome = incomes.reduce((a, b) => a + b, 0);
+var totalExpenses = expenses.reduce((a, b) => a + b, 0);
+var balance = totalIncome - totalExpenses;
+
+// Update the HTML elements with the calculated values
+var monthList = document.getElementById('monthList');
+var incomeList = document.getElementById('incomeList');
+var expensesList = document.getElementById('expensesList');
+var totalIncomeElement = document.getElementById('totalIncome');
+var totalExpensesElement = document.getElementById('totalExpenses');
+var balanceAmountElement = document.getElementById('balanceAmount');
+
+months.forEach(function (month) {
+  var monthItem = document.createElement('li');
+  monthItem.className = 'list-group-item';
+  monthItem.textContent = month;
+  monthList.appendChild(monthItem);
 });
 
-//Function To Disable Edit and Delete Button
-const disableButtons = (bool) => {
-  let editButtons = document.getElementsByClassName("edit");
-  Array.from(editButtons).forEach((element) => {
-    element.disabled = bool;
-  });
-};
-
-//Function To Modify List Elements
-const modifyElement = (element, edit = false) => {
-  let parentDiv = element.parentElement;
-  let currentBalance = balanceValue.innerText;
-  let currentExpense = expenditureValue.innerText;
-  let parentAmount = parentDiv.querySelector(".amount").innerText;
-  if (edit) {
-    let parentText = parentDiv.querySelector(".product").innerText;
-    productTitle.value = parentText;
-    userAmount.value = parentAmount;
-    disableButtons(true);
-  }
-  balanceValue.innerText = parseInt(currentBalance) + parseInt(parentAmount);
-  expenditureValue.innerText =
-    parseInt(currentExpense) - parseInt(parentAmount);
-  parentDiv.remove();
-};
-
-//Function To Create List
-const listCreator = (expenseName, expenseValue) => {
-  let sublistContent = document.createElement("div");
-  sublistContent.classList.add("sublist-content", "flex-space");
-  list.appendChild(sublistContent);
-  sublistContent.innerHTML = `<p class="product">${expenseName}</p><p class="amount">${expenseValue}</p>`;
-  let editButton = document.createElement("button");
-  editButton.classList.add("fa-solid", "fa-pen-to-square", "edit");
-  editButton.style.fontSize = "1.2em";
-  editButton.addEventListener("click", () => {
-    modifyElement(editButton, true);
-  });
-  let deleteButton = document.createElement("button");
-  deleteButton.classList.add("fa-solid", "fa-trash-can", "delete");
-  deleteButton.style.fontSize = "1.2em";
-  deleteButton.addEventListener("click", () => {
-    modifyElement(deleteButton);
-  });
-  sublistContent.appendChild(editButton);
-  sublistContent.appendChild(deleteButton);
-  document.getElementById("list").appendChild(sublistContent);
-};
-
-//Function To Add Expenses
-checkAmountButton.addEventListener("click", () => {
-  //empty checks
-  if (!userAmount.value || !productTitle.value) {
-    productTitleError.classList.remove("hide");
-    return false;
-  }
-  //Enable buttons
-  disableButtons(false);
-  //Expense
-  let expenditure = parseInt(userAmount.value);
-  //Total expense (existing + new)
-  let sum = parseInt(expenditureValue.innerText) + expenditure;
-  expenditureValue.innerText = sum;
-  //Total balance(budget - total expense)
-  const totalBalance = totalAmount - tempAmount;
-  balanceValue.innerText = totalBalance;
-  //Create list
-  listCreator(productTitle.value, userAmount.value);
-  //Empty inputs
-  productTitle.value = "";
-  userAmount.value = "";
-});
-checkIncomeButton.addEventListener("click", () => {
-  //empty checks
-  
-  //Enable buttons
-  disableButtons(false);
-  //Expense
-  let expenditure = parseInt(userIncome.value);
-  //Total expense (existing + new)
-  let sum = parseInt(expenditureValue.innerText) + expenditure;
-  expenditureValue.innerText = sum;
-  //Total balance(budget - total expense)
-  const totalBalance = tempAmount + sum;
-  balanceValue.innerText = totalBalance;
-  //Create list
-  console.log(productIncome.value, userIncome.value)
-  listCreator(productIncome.value, userIncome.value);
-  //Empty inputs
-  productIncome.value = "";
-  userIncome.value = "";
+incomes.forEach(function (income) {
+  var incomeItem = document.createElement('li');
+  incomeItem.className = 'list-group-item';
+  incomeItem.textContent = '$' + income.toFixed(2);
+  incomeList.appendChild(incomeItem);
 });
 
+expenses.forEach(function (expense) {
+  var expenseItem = document.createElement('li');
+  expenseItem.className = 'list-group-item';
+  expenseItem.textContent = '$' + expense.toFixed(2);
+  expensesList.appendChild(expenseItem);
+});
+
+totalIncomeElement.textContent = 'Ukupni prihodi: €' + totalIncome.toFixed(2);
+totalExpensesElement.textContent = 'Ukupni troškovi: €' + totalExpenses.toFixed(2);
+balanceAmountElement.textContent = 'Saldo: €' + balance.toFixed(2);
+
+if (balance > 0) {
+  balanceAmountElement.style.color = 'green';
+} else if (balance < 0) {
+  balanceAmountElement.style.color = 'red';
+} else {
+  balanceAmountElement.style.color = 'black';
+}
